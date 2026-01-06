@@ -1,2 +1,2 @@
 # dbt_materials
-dbt materials for study porpuses
+dbt materials for study purposes
