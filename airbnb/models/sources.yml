@@ -1,0 +1,24 @@
+sources:
+  - name: airbnb
+    schema: raw
+    tables:
+      - name: listings
+        identifier: raw_listings
+
+      - name: hosts
+        identifier: raw_hosts
+
+      - name: reviews
+        identifier: raw_reviews
+        config:
+          loaded_at_field: date
+          freshness:
+            warn_after: { count: 1, period: hour }
+            error_after: { count: 24, period: hour }
+
+#this file defines the source tables for the Airbnb project, including their schema and any specific configurations such as freshness checks for the reviews table.
+# name is the dabase source name
+# schema is the schema within the database
+# tables is a list of tables within that schema
+# identifier is the actual table name in the database
+# config can include additional settings like loaded_at_field and freshness checks

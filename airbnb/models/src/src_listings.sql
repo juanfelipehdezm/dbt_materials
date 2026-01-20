@@ -1,5 +1,6 @@
 WITH raw_listings AS (
-    SELECT * FROM RAW.RAW_LISTINGS
+    --SELECT * FROM RAW.RAW_LISTINGS
+    SELECT * FROM {{ source('airbnb', 'listings') }} -- points to the source defined in sources.yml
 )
 
 SELECT
