@@ -17,7 +17,7 @@ sources:
             error_after: { count: 24, period: hour }
 
 #this file defines the source tables for the Airbnb project, including their schema and any specific configurations such as freshness checks for the reviews table.
-# name is the dabase source name
+# name is the database source name
 # schema is the schema within the database
 # tables is a list of tables within that schema
 # identifier is the actual table name in the database

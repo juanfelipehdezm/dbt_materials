@@ -1,0 +1,11 @@
+snapshots:
+  - name: scd_raw_listings_snapshot
+    description: "A snapshot of the raw listings table to track changes over time."
+    relation: source('airbnb', 'listings')
+    config:
+      unique_key: id
+      strategy: timestamp
+      updated_at: updated_at
+      hard_delete: invalidate
+    # on this snapshot, we are using the timestamp strategy, which means that dbt will look at the updated_at column to determine if a record has changed.
+    # If the updated_at value has changed since the last snapshot, dbt will update the record in the snapshot. If the record has been deleted from the source table, dbt will invalidate the record in the snapshot (mark it as deleted without actually removing it).
