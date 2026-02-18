@@ -1,0 +1,22 @@
+unit_tests:
+  #  This file contains unit tests for the mart_fullmoon_reviews model. The test checks if the model correctly identifies reviews that were made on a full moon date.
+  # #  The test uses two inputs:
+  # #  1. fct_reviews: A table that contains review data, including the review_date.
+  # #  2. seed_full_moon_dates: A table that contains the dates of full moons.
+  # #  The test checks if the model correctly identifies reviews that were made on a full moon date by comparing the review_date with the full_moon_date. The expected output is a table that indicates whether each review was made on a full moon date or not.
+  - name: unittest_fullmoon_matcher
+    model: mart_fullmoon_reviews
+    given:
+      - input: ref('fct_reviews')
+        rows:
+          - { review_date: "2025-01-13" }
+          - { review_date: "2025-01-14" }
+          - { review_date: "2025-01-15" }
+      - input: ref('seed_full_moon_dates')
+        rows:
+          - { full_moon_date: "2025-01-14" }
+    expect:
+      rows:
+        - { review_date: "2025-01-13", is_full_moon_review: "not full moon" }
+        - { review_date: "2025-01-14", is_full_moon_review: "full moon" }
+        - { review_date: "2025-01-15", is_full_moon_review: "not full moon" }

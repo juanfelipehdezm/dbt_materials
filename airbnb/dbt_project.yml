@@ -34,3 +34,7 @@ models:
       +materialized: table # models in the dim/ directory are materialized as tables
     src:
       +materialized: ephemeral # models in the src/ directory are ephemeral, if the model had another previous materialization it will be needed to be dropped first
+
+data_tests:
+  +store_failures: true # store the results of failed data tests in the target/ directory for debugging purposes
+  +schema: _test_failures # store the results of failed data tests in a separate schema for better organization
