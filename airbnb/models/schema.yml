@@ -1,8 +1,15 @@
 models:
-  #tests for the cleansed dimension tables to ensure data quality and integrity
+  #schema tests for the cleansed dimension tables to ensure data quality and integrity
   - name: dim_listings_cleansed #this should be the same as the name of the model file in the models directory
     description: "Cleansed dimension table for Airbnb listings with data tests"
+    data_tests:
+      #model level tests
+      - minimum_row_count:
+          arguments:
+            min_rows: 100
+          severity: warn # warn will not fail the test but will log a warning if the test condition is not met, allowing the data pipeline to continue running while still highlighting potential issues with the data quality.
     columns:
+      #columen level tests
       - name: listing_id
         data_tests:
           - unique
@@ -27,3 +34,23 @@ models:
                     "Shared room",
                     "Hotel room",
                   ]
+      - name: minimum_nights
+        data_tests:
+          - positive_values #this call the generic test we created in the tests/generic/positive_values.sql file to ensure that the minimum_nights column has only positive values
+
+  #data contract for the cleansed dimension table to ensure that the data adheres to the defined schema and constraints
+  - name: dim_hosts_cleansed
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: host_id
+        data_type: integer
+      - name: host_name
+        data_type: string
+      - name: is_superhost
+        data_type: string
+      - name: updated_at
+        data_type: timestamp
+      - name: created_at
+        data_type: timestamp
