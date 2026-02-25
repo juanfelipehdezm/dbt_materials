@@ -10,7 +10,10 @@ WITH raw_reviews AS (
     SELECT * FROM {{ref('src_reviews')}}
 )
 
-SELECT * FROM raw_reviews
+SELECT
+    {{ dbt_utils.generate_surrogate_key(['listing_id', 'review_date', 'reviewer_name','review_text']) }} AS review_id,
+    *
+FROM raw_reviews
 WHERE review_text IS NOT NULL
 -- Only include new records for incremental runs
 -- the this variable refers to the current model being built
