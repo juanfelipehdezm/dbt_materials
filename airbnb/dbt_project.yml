@@ -29,10 +29,7 @@ clean-targets: # directories to be removed by `dbt clean`
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.
 on-run-start: #hooks to run at the start of a dbt run, before any models are built
-  - "CREATE TABLE IF NOT EXISTS {{ target.schema }}.audit_log (
-    model_name STRING,
-    run_timestamp TIMESTAMP
-    )"
+  - "CREATE TABLE IF NOT EXISTS {{ target.schema }}.audit_log ( model_name STRING, run_timestamp TIMESTAMP )"
 models:
   airbnb:
     +grants:
@@ -48,3 +45,5 @@ models:
 data_tests:
   +store_failures: true # store the results of failed data tests in the target/ directory for debugging purposes
   +schema: _test_failures # store the results of failed data tests in a separate schema for better organization
+flags:
+  require_generic_test_arguments_property: true
