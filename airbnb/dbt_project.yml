@@ -35,6 +35,8 @@ on-run-start: #hooks to run at the start of a dbt run, before any models are bui
     )"
 models:
   airbnb:
+    +grants:
+      select: ["transform"] # grant select permissions on all models in the airbnb/ directory to the transform role
     +post-hook:
       - "INSERT INTO {{ target.schema }}.audit_log VALUES ('{{ this }}', CURRENT_TIMESTAMP)" #hooks to run after a model is built, in this case we are inserting a record into the audit_log table with the name of the model and the timestamp of when it was built
     +materialized: view # default materialization for all models in the airbnb project is 'view'
