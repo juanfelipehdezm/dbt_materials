@@ -28,7 +28,13 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ["Entire home/apt", "Private room", "Shared room", "Hotel room"]
+                values:
+                  [
+                    "Entire home/apt",
+                    "Private room",
+                    "Shared room",
+                    "Hotel room",
+                  ]
       - name: minimum_nights
         data_tests:
           - positive_values #this call the generic test we created in the tests/generic/positive_values.sql file to ensure that the minimum_nights column has only positive values
@@ -49,3 +55,10 @@ models:
         data_type: timestamp
       - name: created_at
         data_type: timestamp
+  #dbt expectation test to compare the row count of the dim_listings_w_hosts model with the source listings table to ensure that the data is consistent and complete after the transformation
+  - name: dim_listings_w_hosts
+    description: "Dimension table for Airbnb listings enriched with host information"
+    tests:
+      - dbt_expectations.expect_table_row_count_to_equal_other_table:
+          arguments:
+            compare_model: source('airbnb', 'listings')
