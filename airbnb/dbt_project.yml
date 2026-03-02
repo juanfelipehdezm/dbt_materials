@@ -47,3 +47,7 @@ data_tests:
   +schema: _test_failures # store the results of failed data tests in a separate schema for better organization
 flags:
   require_generic_test_arguments_property: true
+
+vars:
+  user_name: default_user_name
+  in_test: False
