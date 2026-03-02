@@ -4,6 +4,13 @@ sources:
     tables:
       - name: listings
         identifier: raw_listings
+        columns:
+          - name: room_type
+            tests:
+              # this test checks that the room_type column in the listings table has only 4 distinct values, which are the accepted room types for Airbnb listings. This helps ensure data quality and consistency in the source data.
+              - dbt_expectations.expect_column_distinct_count_to_equal:
+                  arguments:
+                    value: 4
 
       - name: hosts
         identifier: raw_hosts

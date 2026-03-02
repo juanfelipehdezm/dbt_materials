@@ -62,3 +62,21 @@ models:
       - dbt_expectations.expect_table_row_count_to_equal_other_table:
           arguments:
             compare_model: source('airbnb', 'listings')
+    columns:
+      - name: price
+        tests:
+          #dbt expectation test to check that the price column in the dim_listings_w_hosts model has values between 50 and 500 for the 99th percentile to ensure that the data is reasonable and does not contain outliers
+          - dbt_expectations.expect_column_quantile_values_to_be_between:
+              arguments:
+                quantile: .99
+                min_value: 50
+                max_value: 500
+          #dbt expectation test to check that the maximum value in the price column of the dim_listings_w_hosts model is between 5000 to ensure that there are no extreme outliers in the data
+          - dbt_expectations.expect_column_max_to_be_between:
+              arguments:
+                max_value: 5000
+                config:
+                  severity: warn #this test will only raise a warning if it fails, allowing the dbt run to continue while still highlighting potential data quality issues
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              arguments:
+                column_type: number
