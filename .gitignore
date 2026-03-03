@@ -199,3 +199,11 @@ config.json
 tmp/
 temp/
 .tmp/
+.tmp_dagster_home_*
+
+# Dagster
+.dagster
+.dagster/storage/
+.dagster/history/
+.dagster/*.db
+.dagster/*.db-*

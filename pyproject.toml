@@ -1,0 +1,33 @@
+[project]
+name = "dbt-bootcamp"
+version = "1.11.0"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "dagster",
+    "dagster-cloud",
+    "dagster-dbt~=0.28.17",
+    "dagster-webserver~=1.12.17",
+    "dbt-core<1.12",
+    "dbt-snowflake<1.12",
+]
+
+[project.optional-dependencies]
+dev = [
+    "dagster-webserver",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["dbt_dagster_airbnb_project"]
+
+[tool.dagster]
+module_name = "dbt_dagster_airbnb_project.definitions"
+code_location_name = "dbt_dagster_airbnb_project"
+
+[tool.uv]
+override-dependencies = [
+    "pyyaml>=6.0.2",
+]
