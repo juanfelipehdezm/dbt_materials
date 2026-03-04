@@ -1,9 +1,22 @@
+import os
 from pathlib import Path
 
-from dagster_dbt import DbtProject
+from dagster_dbt import DbtCliResource
 
-airbnb_project = DbtProject(
-    project_dir=Path(__file__).joinpath("..", "..", "airbnb").resolve(),
-    packaged_project_dir=Path(__file__).joinpath("..", "dbt-project").resolve(),
-)
-airbnb_project.prepare_if_dev()
+dbt_project_dir = Path(__file__).joinpath("..", "..", "airbnb").resolve()
+
+dbt_client = DbtCliResource(project_dir=os.fspath(dbt_project_dir))
+
+# If DAGSTER_DBT_PARSE_PROJECT_ON_LOAD is set, a manifest will be created at run time.
+# Otherwise, we expect a manifest to be present in the project's target directory.
+if os.getenv("DAGSTER_DBT_PARSE_PROJECT_ON_LOAD"):
+    dbt_manifest_path = (
+        dbt_client.cli(
+            ["--quiet", "parse"],
+            target_path=Path("target"),
+        )
+        .wait()
+        .target_path.joinpath("manifest.json")
+    )
+else:
+    dbt_manifest_path = dbt_project_dir.joinpath("target", "manifest.json")
